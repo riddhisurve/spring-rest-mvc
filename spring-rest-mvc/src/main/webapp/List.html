@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<script src="https://code.jquery.com/jquery-3.4.1.js">
+	
+</script>
+<script>
+	$(function() {
+		$.ajax({
+			url : 'listAll.lti',
+			method : 'POST',
+			contentType : 'application/json',
+			success : function(response) {
+				//$("#empdiv").html(JSON.stringify(response));
+				var empsel = $("<select/>");
+				empsel.attr("id","empsel");
+				$.each(response, function(index, emp){
+					//alert(JSON.stringify(emp));
+					var empopt = $("<option/>").attr("value", emp.empno).text(emp.name);
+					empsel.append(empopt);
+				})
+				$("#assignProjToEmpFrm").append(empsel);
+			}
+		})
+		
+		$.ajax({
+			url : 'listAllProj.lti',
+			method : 'POST',
+			contentType : 'application/json',
+			success : function(response) {
+				//$("#empdiv").html(JSON.stringify(response));
+				var projsel = $("<select/>");
+				projsel.attr("id","projsel");
+				$.each(response, function(index, proj){
+					//alert(JSON.stringify(emp));
+					var projopt = $("<option/>").attr("value", proj.id).text(proj.name);
+					projsel.append(projopt);
+				})
+				$("#assignProjToEmpFrm").append(projsel);
+				
+				
+			}
+		})
+		
+		var btn = $("<button/>").attr("type","submit").text("Assign");
+				$("#assignProjToEmpFrm").append(btn);
+				
+				$("#assignProjToEmpFrm").submit(function(evt){
+					evt.preventDefault();
+					var selectedEmpno = $("#empsel").val();
+					var selectedProjno = $("#projsel").val();
+					//alert(selectedEmpno);
+					//alert(selectedProjno);
+					
+					$.ajax({
+					url: 'assignProjToEmp.lti?id='+selectedProjno+'&empno='+selectedEmpno,
+					method: 'GET',
+					success : function(response){
+						alert(JSON.stringify(response));
+					}
+				})
+					 
+				})
+	
+	})
+</script>
+<body>
+<form id="assignProjToEmpFrm">
+</form>
+<div id="empdiv"></div>
+<div id="projdiv"></div>
+</body>
+</html>

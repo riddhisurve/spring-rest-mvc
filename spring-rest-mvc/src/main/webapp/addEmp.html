@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Add Employee</title>
+<script src="https://code.jquery.com/jquery-3.4.1.js">
+	
+</script>
+<script>
+	$(function() {
+		$("#addEmpFrm").submit(function(evt) {
+			evt.preventDefault();
+			var obj = {
+				name : $("#name").val(),
+				salary : $("#salary").val()
+			}
+			$.ajax({
+				url : 'addEmployee.lti',
+				method : 'POST',
+				data : JSON.stringify(obj),
+				contentType : 'application/json',
+				success : function(response) {
+					alert(JSON.stringify(response));
+				}
+			})
+		})
+	})
+</script>
+</head>
+<body>
+	<form id="addEmpFrm">
+		Enter name:<input type="text" id="name"> 
+		Enter salary:<input	type="number" id="salary">
+		<button type="submit">Add</button>
+	</form>
+
+</body>
+</html>
